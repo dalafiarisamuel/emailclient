@@ -1,3 +1,4 @@
+import 'package:emailclient/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -57,4 +58,21 @@ final kJakartaBodyMedium = GoogleFonts.plusJakartaSans(
 final kJakartaBodyBold = GoogleFonts.plusJakartaSans(
   fontWeight: FontWeight.w700,
   height: 1.3,
+);
+
+final kTitleOnboarding = GoogleFonts.plusJakartaSans(
+  fontSize: SizeConfig.blockSizeHorizontal! * 7,
+  color: kDarkColor,
+  fontWeight: FontWeight.bold,
+);
+
+final kSubtitleOnboarding = GoogleFonts.plusJakartaSans(
+  fontSize: SizeConfig.blockSizeHorizontal! * 4,
+  color: kParagraphColor,
+);
+
+const kTextButton = TextStyle(
+  color: kSecondaryColor,
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
 );
