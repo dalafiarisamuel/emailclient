@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../app_styles.dart';
@@ -16,8 +18,9 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int currentPage = 0;
   final PageController _pageController = PageController(initialPage: 0);
+  late final Timer _timer;
 
-  AnimatedContainer dotIndicator(index) {
+  AnimatedContainer _dotIndicator(index) {
     return AnimatedContainer(
       margin: const EdgeInsets.only(right: 8),
       duration: const Duration(milliseconds: 400),
@@ -29,6 +32,31 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         shape: BoxShape.rectangle,
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
+      _scrollPageView();
+    });
+  }
+
+  void _scrollPageView() {
+    if (currentPage == OnBoardingData.onBoardingDataList.length - 1) {
+      _pageController.animateTo(0,
+          duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    } else {
+      _pageController.nextPage(
+          duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    }
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -72,7 +100,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       Row(
                         children: List.generate(
                           OnBoardingData.onBoardingDataList.length,
-                          (index) => dotIndicator(index),
+                          (index) => _dotIndicator(index),
                         ),
                       )
                     ],
@@ -87,18 +115,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     OutlinedButton(
-                      onPressed: () {
-                        if (currentPage ==
-                            OnBoardingData.onBoardingDataList.length - 1) {
-                          _pageController.animateTo(0,
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeOut);
-                        } else {
-                          _pageController.nextPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeOut);
-                        }
-                      },
+                      onPressed: _scrollPageView,
                       style: OutlinedButton.styleFrom(
                         fixedSize: const Size(140, 50),
                         foregroundColor: kParagraphColor,
